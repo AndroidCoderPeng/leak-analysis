@@ -1,0 +1,470 @@
+[
+  {
+    "MaterialName": "球铁",
+    "LowDiameter": 0,
+    "HighDiameter": 99,
+    "Velocity": 1320.0
+  },
+  {
+    "MaterialName": "球铁",
+    "LowDiameter": 100,
+    "HighDiameter": 199,
+    "Velocity": 1250.0
+  },
+  {
+    "MaterialName": "球铁",
+    "LowDiameter": 200,
+    "HighDiameter": 299,
+    "Velocity": 1190.0
+  },
+  {
+    "MaterialName": "球铁",
+    "LowDiameter": 300,
+    "HighDiameter": 399,
+    "Velocity": 1160.0
+  },
+  {
+    "MaterialName": "球铁",
+    "LowDiameter": 400,
+    "HighDiameter": 599,
+    "Velocity": 1130.0
+  },
+  {
+    "MaterialName": "球铁",
+    "LowDiameter": 600,
+    "HighDiameter": 799,
+    "Velocity": 1080.0
+  },
+  {
+    "MaterialName": "球铁",
+    "LowDiameter": 800,
+    "HighDiameter": 899,
+    "Velocity": 1060.0
+  },
+  {
+    "MaterialName": "铸铁",
+    "LowDiameter": 0,
+    "HighDiameter": 99,
+    "Velocity": 1280.0
+  },
+  {
+    "MaterialName": "铸铁",
+    "LowDiameter": 100,
+    "HighDiameter": 199,
+    "Velocity": 1220.0
+  },
+  {
+    "MaterialName": "铸铁",
+    "LowDiameter": 200,
+    "HighDiameter": 299,
+    "Velocity": 1160.0
+  },
+  {
+    "MaterialName": "铸铁",
+    "LowDiameter": 500,
+    "HighDiameter": 699,
+    "Velocity": 1080.0
+  },
+  {
+    "MaterialName": "铸铁",
+    "LowDiameter": 700,
+    "HighDiameter": -1,
+    "Velocity": 1030.0
+  },
+  {
+    "MaterialName": "钢",
+    "LowDiameter": 0,
+    "HighDiameter": 19,
+    "Velocity": 1400.0
+  },
+  {
+    "MaterialName": "钢",
+    "LowDiameter": 20,
+    "HighDiameter": 99,
+    "Velocity": 1300.0
+  },
+  {
+    "MaterialName": "钢",
+    "LowDiameter": 100,
+    "HighDiameter": 199,
+    "Velocity": 1200.0
+  },
+  {
+    "MaterialName": "钢",
+    "LowDiameter": 200,
+    "HighDiameter": 299,
+    "Velocity": 1120.0
+  },
+  {
+    "MaterialName": "钢",
+    "LowDiameter": 300,
+    "HighDiameter": 499,
+    "Velocity": 1040.0
+  },
+  {
+    "MaterialName": "钢",
+    "LowDiameter": 500,
+    "HighDiameter": 699,
+    "Velocity": 1020.0
+  },
+  {
+    "MaterialName": "钢",
+    "LowDiameter": 700,
+    "HighDiameter": 899,
+    "Velocity": 970.0
+  },
+  {
+    "MaterialName": "钢",
+    "LowDiameter": 900,
+    "HighDiameter": -1,
+    "Velocity": 900.0
+  },
+  {
+    "MaterialName": "铜",
+    "LowDiameter": 0,
+    "HighDiameter": 14,
+    "Velocity": 1260.0
+  },
+  {
+    "MaterialName": "铜",
+    "LowDiameter": 15,
+    "HighDiameter": 24,
+    "Velocity": 1230.0
+  },
+  {
+    "MaterialName": "铜",
+    "LowDiameter": 25,
+    "HighDiameter": 59,
+    "Velocity": 1180.0
+  },
+  {
+    "MaterialName": "铜",
+    "LowDiameter": 60,
+    "HighDiameter": -1,
+    "Velocity": 1150.0
+  },
+  {
+    "MaterialName": "铅",
+    "LowDiameter": 0,
+    "HighDiameter": 19,
+    "Velocity": 1200.0
+  },
+  {
+    "MaterialName": "铅",
+    "LowDiameter": 20,
+    "HighDiameter": -1,
+    "Velocity": 1150.0
+  },
+  {
+    "MaterialName": "水泥",
+    "LowDiameter": 0,
+    "HighDiameter": 99,
+    "Velocity": 1100.0
+  },
+  {
+    "MaterialName": "水泥",
+    "LowDiameter": 100,
+    "HighDiameter": 199,
+    "Velocity": 1000.0
+  },
+  {
+    "MaterialName": "水泥",
+    "LowDiameter": 200,
+    "HighDiameter": 349,
+    "Velocity": 960.0
+  },
+  {
+    "MaterialName": "水泥",
+    "LowDiameter": 350,
+    "HighDiameter": 499,
+    "Velocity": 960.0
+  },
+  {
+    "MaterialName": "水泥",
+    "LowDiameter": 500,
+    "HighDiameter": 699,
+    "Velocity": 910.0
+  },
+  {
+    "MaterialName": "水泥",
+    "LowDiameter": 700,
+    "HighDiameter": 899,
+    "Velocity": 900.0
+  },
+  {
+    "MaterialName": "水泥",
+    "LowDiameter": 900,
+    "HighDiameter": -1,
+    "Velocity": 880.0
+  },
+  {
+    "MaterialName": "聚氯乙烯",
+    "LowDiameter": 0,
+    "HighDiameter": 17,
+    "Velocity": 650.0
+  },
+  {
+    "MaterialName": "聚氯乙烯",
+    "LowDiameter": 18,
+    "HighDiameter": 22,
+    "Velocity": 630.0
+  },
+  {
+    "MaterialName": "聚氯乙烯",
+    "LowDiameter": 23,
+    "HighDiameter": 27,
+    "Velocity": 600.0
+  },
+  {
+    "MaterialName": "聚氯乙烯",
+    "LowDiameter": 28,
+    "HighDiameter": 49,
+    "Velocity": 540.0
+  },
+  {
+    "MaterialName": "聚氯乙烯",
+    "LowDiameter": 50,
+    "HighDiameter": 74,
+    "Velocity": 520.0
+  },
+  {
+    "MaterialName": "聚氯乙烯",
+    "LowDiameter": 75,
+    "HighDiameter": 99,
+    "Velocity": 480.0
+  },
+  {
+    "MaterialName": "聚氯乙烯",
+    "LowDiameter": 100,
+    "HighDiameter": 199,
+    "Velocity": 460.0
+  },
+  {
+    "MaterialName": "聚氯乙烯",
+    "LowDiameter": 200,
+    "HighDiameter": -1,
+    "Velocity": 440.0
+  },
+  {
+    "MaterialName": "高密度聚乙烯",
+    "LowDiameter": 0,
+    "HighDiameter": 17,
+    "Velocity": 360.0
+  },
+  {
+    "MaterialName": "高密度聚乙烯",
+    "LowDiameter": 18,
+    "HighDiameter": 22,
+    "Velocity": 330.0
+  },
+  {
+    "MaterialName": "高密度聚乙烯",
+    "LowDiameter": 23,
+    "HighDiameter": 74,
+    "Velocity": 300.0
+  },
+  {
+    "MaterialName": "高密度聚乙烯",
+    "LowDiameter": 75,
+    "HighDiameter": 199,
+    "Velocity": 300.0
+  },
+  {
+    "MaterialName": "高密度聚乙烯",
+    "LowDiameter": 200,
+    "HighDiameter": -1,
+    "Velocity": 300.0
+  },
+  {
+    "MaterialName": "中密度聚乙烯",
+    "LowDiameter": 0,
+    "HighDiameter": 17,
+    "Velocity": 300.0
+  },
+  {
+    "MaterialName": "中密度聚乙烯",
+    "LowDiameter": 18,
+    "HighDiameter": 22,
+    "Velocity": 270.0
+  },
+  {
+    "MaterialName": "中密度聚乙烯",
+    "LowDiameter": 23,
+    "HighDiameter": 74,
+    "Velocity": 240.0
+  },
+  {
+    "MaterialName": "中密度聚乙烯",
+    "LowDiameter": 75,
+    "HighDiameter": 199,
+    "Velocity": 240.0
+  },
+  {
+    "MaterialName": "中密度聚乙烯",
+    "LowDiameter": 200,
+    "HighDiameter": -1,
+    "Velocity": 250.0
+  },
+  {
+    "MaterialName": "玻璃钢",
+    "LowDiameter": 0,
+    "HighDiameter": 49,
+    "Velocity": 1300.0
+  },
+  {
+    "MaterialName": "玻璃钢",
+    "LowDiameter": 50,
+    "HighDiameter": 99,
+    "Velocity": 1280.0
+  },
+  {
+    "MaterialName": "玻璃钢",
+    "LowDiameter": 100,
+    "HighDiameter": 199,
+    "Velocity": 1210.0
+  },
+  {
+    "MaterialName": "玻璃钢",
+    "LowDiameter": 200,
+    "HighDiameter": 399,
+    "Velocity": 1180.0
+  },
+  {
+    "MaterialName": "玻璃钢",
+    "LowDiameter": 400,
+    "HighDiameter": 799,
+    "Velocity": 1160.0
+  },
+  {
+    "MaterialName": "玻璃钢",
+    "LowDiameter": 800,
+    "HighDiameter": 1199,
+    "Velocity": 1150.0
+  },
+  {
+    "MaterialName": "玻璃钢",
+    "LowDiameter": 1200,
+    "HighDiameter": 1999,
+    "Velocity": 1150.0
+  },
+  {
+    "MaterialName": "玻璃钢",
+    "LowDiameter": 2000,
+    "HighDiameter": -1,
+    "Velocity": 1140.0
+  },
+  {
+    "MaterialName": "混凝土",
+    "LowDiameter": 0,
+    "HighDiameter": 499,
+    "Velocity": 1160.0
+  },
+  {
+    "MaterialName": "混凝土",
+    "LowDiameter": 500,
+    "HighDiameter": 699,
+    "Velocity": 1100.0
+  },
+  {
+    "MaterialName": "混凝土",
+    "LowDiameter": 700,
+    "HighDiameter": 899,
+    "Velocity": 1030.0
+  },
+  {
+    "MaterialName": "混凝土",
+    "LowDiameter": 900,
+    "HighDiameter": 1199,
+    "Velocity": 1020.0
+  },
+  {
+    "MaterialName": "混凝土",
+    "LowDiameter": 1200,
+    "HighDiameter": 1799,
+    "Velocity": 1010.0
+  },
+  {
+    "MaterialName": "混凝土",
+    "LowDiameter": 1800,
+    "HighDiameter": -1,
+    "Velocity": 1000.0
+  },
+  {
+    "MaterialName": "粘土",
+    "LowDiameter": 0,
+    "HighDiameter": 99,
+    "Velocity": 1100.0
+  },
+  {
+    "MaterialName": "粘土",
+    "LowDiameter": 100,
+    "HighDiameter": 199,
+    "Velocity": 1100.0
+  },
+  {
+    "MaterialName": "粘土",
+    "LowDiameter": 200,
+    "HighDiameter": 349,
+    "Velocity": 1100.0
+  },
+  {
+    "MaterialName": "粘土",
+    "LowDiameter": 350,
+    "HighDiameter": 499,
+    "Velocity": 1100.0
+  },
+  {
+    "MaterialName": "粘土",
+    "LowDiameter": 500,
+    "HighDiameter": 699,
+    "Velocity": 1100.0
+  },
+  {
+    "MaterialName": "粘土",
+    "LowDiameter": 700,
+    "HighDiameter": 899,
+    "Velocity": 1100.0
+  },
+  {
+    "MaterialName": "粘土",
+    "LowDiameter": 900,
+    "HighDiameter": -1,
+    "Velocity": 1100.0
+  },
+  {
+    "MaterialName": "低密度聚乙烯",
+    "LowDiameter": 0,
+    "HighDiameter": 17,
+    "Velocity": 310.0
+  },
+  {
+    "MaterialName": "低密度聚乙烯",
+    "LowDiameter": 18,
+    "HighDiameter": 22,
+    "Velocity": 290.0
+  },
+  {
+    "MaterialName": "低密度聚乙烯",
+    "LowDiameter": 23,
+    "HighDiameter": 74,
+    "Velocity": 230.0
+  },
+  {
+    "MaterialName": "低密度聚乙烯",
+    "LowDiameter": 75,
+    "HighDiameter": -1,
+    "Velocity": 230.0
+  },
+  {
+    "MaterialName": "铸铁",
+    "LowDiameter": 300,
+    "HighDiameter": 399,
+    "Velocity": 1130.0
+  },
+  {
+    "MaterialName": "铸铁",
+    "LowDiameter": 400,
+    "HighDiameter": 499,
+    "Velocity": 1100.0
+  }
+]

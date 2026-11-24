@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "leak-analysis"
+version = "0.1.0"
+description = "漏水信号分析与相关定位桌面应用"
+requires-python = ">=3.10"
+dependencies = [
+    "PySide6",
+    "numpy",
+    "scipy",
+    "matplotlib",
+]
+
+[project.scripts]
+leak-analysis = "main:main"
+
+[tool.setuptools]
+py-modules = ["main", "MainWindow", "data_analysis", "ui_MainWindow"]
