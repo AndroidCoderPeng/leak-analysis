@@ -147,6 +147,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"  最优频段：{result.best_low}-{result.best_high} Hz"
           f"（扫描 {result.bands_used} 档）")
     print(f"  峰值相关系数：{result.coefficient:.4f}，SNR：{result.snr:.2f}")
+    print(f"  定位可信度：{'可信（SNR ≥ 6）' if result.flag else '不可信（SNR < 6）'}")
 
     out_dir = Path(args.output)
     out_dir.mkdir(parents=True, exist_ok=True)

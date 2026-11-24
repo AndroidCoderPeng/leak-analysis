@@ -42,6 +42,12 @@
     "Velocity": 1060.0
   },
   {
+    "MaterialName": "球铁",
+    "LowDiameter": 1000,
+    "HighDiameter": -1,
+    "Velocity": 1030.0
+  },
+  {
     "MaterialName": "铸铁",
     "LowDiameter": 0,
     "HighDiameter": 99,

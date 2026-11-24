@@ -80,7 +80,8 @@ def plot_spectrum(out_dir: Path, data_a, data_b, fs: float,
             (data_a[:preview_length], "通道 A", COLOR_A),
             (data_b[:preview_length], "通道 B", COLOR_B),
     ):
-        frequencies, amplitudes = spectrum(values, fs, max_frequency)
+        frequencies, amplitudes = spectrum(values, fs,
+                                           max_frequency=max_frequency)
         if not frequencies.size:
             continue
         peak_index = int(amplitudes.argmax())
@@ -173,6 +174,7 @@ def write_result_json(out_dir: Path, result: LocateResult, params,
         },
         "result": {
             "ok": result.ok,
+            "flag": result.flag,
             "dis_a": result.dis_a,
             "dis_b": result.dis_b,
             "snr": result.snr,

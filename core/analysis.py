@@ -12,8 +12,14 @@ import numpy as np
 from scipy import signal
 
 SAMPLE_RATE = 7500.0
+#: 阻带边界系数：阻带 = [0.8*low, 1.2*high]（与 MATLAB bandp.m 一致）
 CUT_LOW = 0.8
 CUT_HIGH = 1.2
+#: 通带纹波 (dB) 与阻带衰减 (dB)（与 MATLAB bandp.m 内部固定值一致）
+PASS_RIPPLE_DB = 1.0
+STOP_ATTEN_DB = 40.0
+#: 定位有效性阈值：SNR 低于该值视为不可信（与 MATLAB locating.m 的 flag 判据一致）
+SNR_VALID_THRESHOLD = 6.0
 
 #: 默认扫描频段（Hz）
 DEFAULT_BANDS = [
@@ -24,6 +30,7 @@ DEFAULT_BANDS = [
 @dataclass
 class LocateResult:
     ok: bool = False
+    flag: bool = False  # SNR >= SNR_VALID_THRESHOLD 时为 True（定位可信）
     dis_a: float = -1.0
     dis_b: float = -1.0
     snr: float = 0.0
@@ -49,17 +56,13 @@ def chebyshev2_bandpass(values: Iterable[float], low: float, high: float,
     if x.size == 0:
         return x
 
-    cut_low = low * CUT_LOW
-    cut_high = high * CUT_HIGH
-    if cut_low <= 0 or cut_high >= fs / 2 or cut_low >= cut_high:
+    wp = [low / (fs / 2), high / (fs / 2)]
+    ws = [low * CUT_LOW / (fs / 2), high * CUT_HIGH / (fs / 2)]
+    if min(wp) <= 0 or max(wp) >= 1 or min(wp) >= max(wp):
         return x.copy()
 
-    wp = [cut_low / (fs / 2), cut_high / (fs / 2)]
-    ws = [max(0.001, cut_low * 0.9 / (fs / 2)),
-          min(0.999, cut_high * 1.1 / (fs / 2))]
-
     try:
-        order, wn = signal.cheb2ord(wp, ws, 0.5, 40.0)
+        order, wn = signal.cheb2ord(wp, ws, PASS_RIPPLE_DB, STOP_ATTEN_DB)
         b, a = signal.cheby2(order, 40.0, wn, btype="bandpass")
         if len(b) > len(x):
             return x.copy()
@@ -160,6 +163,7 @@ def evaluate_band(a: Iterable[float], b: Iterable[float], distance: float,
     result.ok = True
     result.coefficient = coefficient
     result.snr = coefficient / mean_corr
+    result.flag = result.snr >= SNR_VALID_THRESHOLD
     result.dis_a = dis_a
     result.dis_b = dis_b
     result.time_diff = (dis_a - dis_b) / velocity
@@ -202,17 +206,17 @@ def locate(a: Iterable[float], b: Iterable[float], distance: float,
 
 
 def spectrum(values: Iterable[float], fs: float = SAMPLE_RATE,
-             max_frequency: float = 3000.0):
+             min_frequency: float = 20.0, max_frequency: float = 3000.0):
+    """与 MATLAB getFreWave.m 一致：全长 FFT，返回 min~max 频率范围内的幅值。"""
     x = np.asarray(values, dtype=np.float64)
-    n = 1 << (x.size.bit_length() - 1)
+    n = x.size
     if n < 2:
         return np.array([]), np.array([])
 
-    segment = x[:n] - np.mean(x[:n])
-    spectrum_values = np.fft.rfft(segment)
+    spectrum_values = np.fft.rfft(x)
     frequencies = np.fft.rfftfreq(n, d=1.0 / fs)
     amplitudes = np.abs(spectrum_values) * 2.0 / n
-    mask = frequencies <= max_frequency
+    mask = (frequencies >= min_frequency) & (frequencies <= max_frequency)
     return frequencies[mask], amplitudes[mask]
 
 
