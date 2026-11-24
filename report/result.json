@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-11-24T23:19:01",
+  "data_file": "data\\测试数据.66.161317.txt",
+  "params": {
+    "distance": 209.0,
+    "velocity": 1130.0,
+    "material": "铸铁",
+    "diameter": 300,
+    "freq_min": 100.0,
+    "freq_max": 3000.0,
+    "sample_rate": 7500.0,
+    "duration": 10.0
+  },
+  "result": {
+    "ok": true,
+    "dis_a": 107.66,
+    "dis_b": 101.34,
+    "snr": 10.89573135201432,
+    "coefficient": 0.38402891384237126,
+    "time_diff": 0.005592920353982295,
+    "best_band": [
+      800,
+      1600
+    ],
+    "bands_used": 7
+  }
+}

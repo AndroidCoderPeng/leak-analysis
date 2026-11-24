@@ -1,3 +1,8 @@
+"""漏水信号分析与相关定位核心算法。
+
+由原 data_analysis.py 迁移而来，纯 numpy/scipy 实现，与任何界面框架无关。
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -10,6 +15,11 @@ SAMPLE_RATE = 7500.0
 CUT_LOW = 0.8
 CUT_HIGH = 1.2
 
+#: 默认扫描频段（Hz）
+DEFAULT_BANDS = [
+    (100, 300), (200, 500), (400, 800), (600, 1200),
+    (800, 1600), (1000, 2000), (1200, 3000),
+]
 
 @dataclass
 class LocateResult:
@@ -206,3 +216,11 @@ def spectrum(values: Iterable[float], fs: float = SAMPLE_RATE,
     return frequencies[mask], amplitudes[mask]
 
 
+def filter_bands(bands, freq_min: float = 0.0, freq_max: float = 0.0):
+    """按用户指定的频率范围筛选扫描频段，逻辑与原界面版一致。"""
+    if freq_min > 0 or freq_max > 0:
+        bands = [band for band in bands
+                 if band[0] >= freq_min and band[1] <= freq_max]
+    if not bands:
+        bands = [(freq_min, freq_max)]
+    return bands
