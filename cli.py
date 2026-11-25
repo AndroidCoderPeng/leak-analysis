@@ -71,17 +71,14 @@ def resolve_params(args) -> AnalysisParams:
 
     # 声速未明确指定时，尝试按材料 + 管径从声速表匹配
     if not params.velocity_known() and params.material and params.diameter > 0:
-        velocity = _match_velocity_from_table(args.velocity_table,
-                                              params.material, params.diameter)
+        velocity = _match_velocity_from_table(args.velocity_table, params.material, params.diameter)
         if velocity is not None:
             params.velocity = velocity
-            print(f"已按声速表匹配声速：{params.material} DN{params.diameter} "
-                  f"→ {velocity:g} m/s")
+            print(f"已按声速表匹配声速：{params.material} DN{params.diameter} → {velocity:g} m/s")
     return params
 
 
-def _match_velocity_from_table(table_path: str, material: str,
-                               diameter: int) -> float | None:
+def _match_velocity_from_table(table_path: str, material: str, diameter: int) -> float | None:
     if not table_path:
         return None
     try:
@@ -126,8 +123,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"参数：距离 {params.distance:g} m，声速 {params.velocity:g} m/s，"
           f"扫描频段 {bands[0][0]}-{bands[-1][1]} Hz 共 {len(bands)} 档")
 
-    result = locate(data_a[:use_length], data_b[:use_length],
-                    params.distance, params.velocity, bands, params.sample_rate)
+    result = locate(data_a[:use_length], data_b[:use_length], params.distance, params.velocity, bands,
+                    params.sample_rate)
 
     if not result.ok:
         print("定位失败：没有有效频段参与计算，请检查参数和频段范围", file=sys.stderr)
@@ -137,8 +134,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"  距传感器 A：{result.dis_a:.2f} m")
     print(f"  距传感器 B：{result.dis_b:.2f} m")
     print(f"  时差：{result.time_diff * 1000:.2f} ms")
-    print(f"  最优频段：{result.best_low}-{result.best_high} Hz"
-          f"（扫描 {result.bands_used} 档）")
+    print(f"  最优频段：{result.best_low}-{result.best_high} Hz（扫描 {result.bands_used} 档）")
     print(f"  峰值相关系数：{result.coefficient:.4f}，SNR：{result.snr:.2f}")
     print(f"  定位可信度：{'可信（SNR ≥ 6）' if result.flag else '不可信（SNR < 6）'}")
 
@@ -150,10 +146,8 @@ def main(argv: list[str] | None = None) -> int:
     if not args.no_plots:
         try:
             paths = [
-                plot_waveforms(out_dir, data_a, data_b,
-                               params.sample_rate, params.duration),
-                plot_spectrum(out_dir, data_a, data_b, params.sample_rate,
-                              params.duration),
+                plot_waveforms(out_dir, data_a, data_b, params.sample_rate, params.duration),
+                plot_spectrum(out_dir, data_a, data_b, params.sample_rate, params.duration),
                 plot_correlation(out_dir, result, params.distance),
             ]
         except Exception as exc:  # 图片生成失败不影响结果输出

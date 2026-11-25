@@ -20,13 +20,17 @@ PASS_RIPPLE_DB = 1.0
 STOP_ATTEN_DB = 40.0
 #: 定位有效性阈值：SNR 低于该值视为不可信（与 MATLAB locating.m 的 flag 判据一致）
 SNR_VALID_THRESHOLD = 6.0
-#: 每个时延点参与归一化相关计算的最长有效窗口。对应 7500 Hz 时的 5000 点。
+#: 每个时延点参与相关计算的固定窗口，对应 7500 Hz 时的 5000 点。
 CORRELATION_WINDOW_SECONDS = 5000.0 / SAMPLE_RATE
 
-#: 默认扫描频段（Hz）
+#: 与 algo-compare/freList_modified.xlsx Sheet2 一致的扫描频段。
 DEFAULT_BANDS = [
-    (100, 300), (200, 500), (400, 800), (600, 1200),
-    (800, 1600), (1000, 2000), (1200, 3000),
+    (100, 400), (100, 500), (100, 600), (100, 700), (100, 800),
+    (100, 900), (100, 1000), (100, 1100), (100, 1200), (100, 1300),
+    (100, 1400), (100, 1500), (100, 1600), (100, 1700), (100, 1800),
+    (100, 1900), (100, 2000), (100, 2100), (100, 2200), (100, 2300),
+    (100, 2400), (100, 2500), (55, 150), (70, 125), (60, 200),
+    (75, 300), (80, 350), (60, 400), (110, 500),
 ]
 
 @dataclass
@@ -86,8 +90,7 @@ def pearson_overlap(a: np.ndarray, b: np.ndarray, offset: int,
     if length < 2:
         return 0.0
 
-    segment_a = np.asarray(a[a_start:a_end], dtype=np.float64)
-    segment_a = segment_a[:length]
+    segment_a = np.asarray(a[a_start:a_start + length], dtype=np.float64)
     segment_b = np.asarray(b[:length], dtype=np.float64)
     if not np.all(np.isfinite(segment_a)) or not np.all(np.isfinite(segment_b)):
         return 0.0
@@ -97,28 +100,19 @@ def pearson_overlap(a: np.ndarray, b: np.ndarray, offset: int,
     if scale_a <= 1e-15 or scale_b <= 1e-15:
         return 0.0
 
-    segment_a = segment_a / scale_a
-    segment_b = segment_b / scale_b
-    da = segment_a - np.mean(segment_a)
-    db = segment_b - np.mean(segment_b)
-
-    var_a = float(np.dot(da, da))
-    var_b = float(np.dot(db, db))
-    if not np.isfinite(var_a) or not np.isfinite(var_b):
-        return 0.0
-    if var_a <= 1e-15 or var_b <= 1e-15:
+    da = segment_a / scale_a
+    db = segment_b / scale_b
+    da = da - np.mean(da)
+    db = db - np.mean(db)
+    variance_a = float(np.dot(da, da))
+    variance_b = float(np.dot(db, db))
+    if variance_a <= 1e-15 or variance_b <= 1e-15:
         return 0.0
 
-    covariance = float(np.dot(da, db))
-    denominator = np.sqrt(var_a * var_b)
-    if not np.isfinite(covariance) or not np.isfinite(denominator) or denominator <= 1e-15:
-        return 0.0
-
-    coefficient = covariance / denominator
+    coefficient = float(np.dot(da, db)) / np.sqrt(variance_a * variance_b)
     if not np.isfinite(coefficient):
         return 0.0
     return float(np.clip(coefficient, -1.0, 1.0))
-
 
 def correlation_vector(a: np.ndarray, b: np.ndarray, distance: float,
                        velocity: float, fs: float = SAMPLE_RATE):
@@ -140,12 +134,11 @@ def correlation_vector(a: np.ndarray, b: np.ndarray, distance: float,
     dis_axis = np.zeros(point_num, dtype=np.float64)
 
     for i in range(max_lag + 1):
-        # a 相对 b 延迟 i 个采样点时，传播到 A 的距离增加。
-        corr[center + i] = pearson_overlap(
-            a, b, i, correlation_window_samples
-        )
         corr[center - i] = pearson_overlap(
             b, a, i, correlation_window_samples
+        )
+        corr[center + i] = pearson_overlap(
+            a, b, i, correlation_window_samples
         )
         half = velocity * sampling_interval_us / 2.0 * i * 1e-6
         dis_axis[center - i] = distance / 2.0 - half
