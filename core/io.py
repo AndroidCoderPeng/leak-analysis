@@ -116,8 +116,10 @@ def apply_config(params: AnalysisParams, config: dict[str, Any]) -> int:
     for keys, field_name, cast in (
             (("PipeLength", "distance"), "distance", float),
             (("PipeDiameter", "diameter"), "diameter", take_int),
-            (("MaxFrequency", "maxFrequency", "freqMax"), "freq_max", float),
-            (("MinFrequency", "minFrequency", "freqMin"), "freq_min", float),
+            (("MaxFrequency", "maxFrequency", "freqMax",
+              "HighFrequency", "highFrequency"), "freq_max", float),
+            (("MinFrequency", "minFrequency", "freqMin",
+              "LowFrequency", "lowFrequency"), "freq_min", float),
             (("Velocity", "velocity"), "velocity", float),
     ):
         value = next((config[key] for key in keys if key in config), None)

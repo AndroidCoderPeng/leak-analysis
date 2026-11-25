@@ -63,10 +63,10 @@ def chebyshev2_bandpass(values: Iterable[float], low: float, high: float,
 
     try:
         order, wn = signal.cheb2ord(wp, ws, PASS_RIPPLE_DB, STOP_ATTEN_DB)
-        b, a = signal.cheby2(order, 40.0, wn, btype="bandpass")
-        if len(b) > len(x):
-            return x.copy()
-        return signal.filtfilt(b, a, x)
+        sos = signal.cheby2(
+            order, STOP_ATTEN_DB, wn, btype="bandpass", output="sos"
+        )
+        return signal.sosfiltfilt(sos, x)
     except (ValueError, RuntimeError):
         return x.copy()
 
@@ -131,8 +131,9 @@ def correlation_vector(a: np.ndarray, b: np.ndarray, distance: float,
     dis_axis = np.zeros(point_num, dtype=np.float64)
 
     for i in range(max_lag + 1):
-        corr[center - i] = pearson_overlap(a, b, i)
-        corr[center + i] = pearson_overlap(b, a, i)
+        # a 相对 b 延迟 i 个采样点时，传播到 A 的距离增加。
+        corr[center + i] = pearson_overlap(a, b, i)
+        corr[center - i] = pearson_overlap(b, a, i)
         half = velocity * sampling_interval_us / 2.0 * i * 1e-6
         dis_axis[center - i] = distance / 2.0 - half
         dis_axis[center + i] = distance / 2.0 + half
