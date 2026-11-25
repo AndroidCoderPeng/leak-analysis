@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-11-24T23:41:48",
-  "data_file": "data\\测试数据.66.161317.txt",
+  "generated_at": "2026-11-25T09:56:39",
+  "data_file": "data\\测试报告20261124.8\\测试数据.8.132407.txt",
   "params": {
     "distance": 209.0,
-    "velocity": 1130.0,
-    "material": "",
-    "diameter": 0,
+    "velocity": 1160.0,
+    "material": "铸铁",
+    "diameter": 200,
     "freq_min": 0.0,
     "freq_max": 0.0,
     "sample_rate": 7500.0,
@@ -14,14 +14,14 @@
   "result": {
     "ok": true,
     "flag": true,
-    "dis_a": 107.97,
-    "dis_b": 101.03,
-    "snr": 10.720649271541705,
-    "coefficient": 0.45732561692574514,
-    "time_diff": 0.00614159292035398,
+    "dis_a": 110.15,
+    "dis_b": 98.85,
+    "snr": 8.300765750465988,
+    "coefficient": 0.25501662488693594,
+    "time_diff": 0.009741379310344838,
     "best_band": [
-      800,
-      1600
+      1000,
+      2000
     ],
     "bands_used": 7
   }

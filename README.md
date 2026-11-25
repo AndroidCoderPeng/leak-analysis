@@ -20,7 +20,7 @@
 python cli.py data/测试数据.66.161317.txt -d 209 -v 1130
 
 # 详细用法：自动生成 report/ 目录（波形、频谱、相关曲线 PNG + result.json）
-python cli.py "data/测试数据.66.161317.txt" -c "data/参数配置.66.161317.json" --material 铸铁 --diameter 300
+python cli.py data/测试数据.66.161317.txt -c data/参数配置.66.161317.json --material 铸铁 --diameter 300
 
 # 从 JSON 配置文件读取参数（命令行参数可覆盖配置文件）
 python cli.py data/测试数据.66.161317.txt -c data/参数配置.66.161317.json

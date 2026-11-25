@@ -29,29 +29,22 @@ DEFAULT_VELOCITY_TABLE = PROJECT_ROOT / "config" / "velocity_table.json"
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        prog="leak-analysis",
-        description="漏水信号分析与相关定位（命令行版）",
-    )
+    parser = argparse.ArgumentParser(prog="leak-analysis", description="漏水信号分析与相关定位命令行工具", )
     parser.add_argument("data_file", help="A/B 双通道数据文件（.txt / .dat）")
     parser.add_argument("-c", "--config", help="JSON 参数配置文件")
-    parser.add_argument("-o", "--output", default="report",
-                        help="报告输出目录（默认 report）")
+    parser.add_argument("-o", "--output", default="report", help="报告输出目录（默认 report）")
     parser.add_argument("-d", "--distance", type=float, help="传感器间距 (m)")
     parser.add_argument("-v", "--velocity", type=float, help="声速 (m/s)")
     parser.add_argument("--material", help="管材名称（用于自动匹配声速）")
     parser.add_argument("--diameter", type=int, help="管径 (mm)（用于自动匹配声速）")
     parser.add_argument("--freq-min", type=float, help="最小频率 (Hz)")
     parser.add_argument("--freq-max", type=float, help="最大频率 (Hz)")
-    parser.add_argument("--sample-rate", type=float, default=SAMPLE_RATE,
-                        help=f"采样率 (Hz，默认 {SAMPLE_RATE:g})")
-    parser.add_argument("--duration", type=float, default=10.0,
-                        help="参与计算的信号时长 (s，默认 10)")
+    parser.add_argument("--sample-rate", type=float, default=SAMPLE_RATE, help=f"采样率 (Hz，默认 {SAMPLE_RATE:g})")
+    parser.add_argument("--duration", type=float, default=10.0, help="参与计算的信号时长 (s，默认 10)")
     parser.add_argument("--velocity-table",
                         default=str(DEFAULT_VELOCITY_TABLE) if DEFAULT_VELOCITY_TABLE.exists() else "",
                         help="管材声速表 JSON（默认 config/velocity_table.json）")
-    parser.add_argument("--no-plots", action="store_true",
-                        help="只输出结果，不生成图片")
+    parser.add_argument("--no-plots", action="store_true", help="只输出结果，不生成图片")
     return parser
 
 
