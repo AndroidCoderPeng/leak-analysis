@@ -20,6 +20,8 @@ PASS_RIPPLE_DB = 1.0
 STOP_ATTEN_DB = 40.0
 #: 定位有效性阈值：SNR 低于该值视为不可信（与 MATLAB locating.m 的 flag 判据一致）
 SNR_VALID_THRESHOLD = 6.0
+#: 每个时延点参与归一化相关计算的最长有效窗口。对应 7500 Hz 时的 5000 点。
+CORRELATION_WINDOW_SECONDS = 5000.0 / SAMPLE_RATE
 
 #: 默认扫描频段（Hz）
 DEFAULT_BANDS = [
@@ -71,18 +73,22 @@ def chebyshev2_bandpass(values: Iterable[float], low: float, high: float,
         return x.copy()
 
 
-def pearson_overlap(a: np.ndarray, b: np.ndarray, offset: int) -> float:
+def pearson_overlap(a: np.ndarray, b: np.ndarray, offset: int,
+                    max_samples: int | None = None) -> float:
     if a.size == 0 or b.size == 0:
         return 0.0
 
     a_start = max(0, offset)
     a_end = min(a.size, offset + b.size)
     length = a_end - a_start
+    if max_samples is not None:
+        length = min(length, max(0, max_samples))
     if length < 2:
         return 0.0
 
     segment_a = np.asarray(a[a_start:a_end], dtype=np.float64)
-    segment_b = np.asarray(b[0:length], dtype=np.float64)
+    segment_a = segment_a[:length]
+    segment_b = np.asarray(b[:length], dtype=np.float64)
     if not np.all(np.isfinite(segment_a)) or not np.all(np.isfinite(segment_b)):
         return 0.0
 
@@ -126,14 +132,21 @@ def correlation_vector(a: np.ndarray, b: np.ndarray, distance: float,
     max_lag = int(np.floor(max_time_diff_us / sampling_interval_us))
     point_num = 1 + 2 * max_lag
     center = max_lag
+    correlation_window_samples = max(
+        2, int(round(CORRELATION_WINDOW_SECONDS * fs))
+    )
 
     corr = np.zeros(point_num, dtype=np.float64)
     dis_axis = np.zeros(point_num, dtype=np.float64)
 
     for i in range(max_lag + 1):
         # a 相对 b 延迟 i 个采样点时，传播到 A 的距离增加。
-        corr[center + i] = pearson_overlap(a, b, i)
-        corr[center - i] = pearson_overlap(b, a, i)
+        corr[center + i] = pearson_overlap(
+            a, b, i, correlation_window_samples
+        )
+        corr[center - i] = pearson_overlap(
+            b, a, i, correlation_window_samples
+        )
         half = velocity * sampling_interval_us / 2.0 * i * 1e-6
         dis_axis[center - i] = distance / 2.0 - half
         dis_axis[center + i] = distance / 2.0 + half

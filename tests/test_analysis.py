@@ -50,7 +50,7 @@ class ReportSampleTests(unittest.TestCase):
                     data_a[:75000], data_b[:75000], 209.0, 1160.0, *band
                 )
                 self.assertTrue(result.ok)
-                self.assertLessEqual(abs(result.dis_a - expected), 2.1)
+                self.assertLessEqual(abs(result.dis_a - expected), 0.63)
 
 
 class ApplyConfigTests(unittest.TestCase):
