@@ -171,6 +171,7 @@ def write_result_json(out_dir: Path, result: LocateResult, params,
             "freq_max": params.freq_max,
             "sample_rate": params.sample_rate,
             "duration": params.duration,
+            "band_mode": params.band_mode,
         },
         "result": {
             "ok": result.ok,

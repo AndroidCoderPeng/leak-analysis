@@ -3,7 +3,13 @@ from pathlib import Path
 
 import numpy as np
 
-from core.analysis import chebyshev2_bandpass, correlation_vector, evaluate_band
+from core.analysis import (
+    HIGH_FREQUENCY_BANDS,
+    chebyshev2_bandpass,
+    correlation_vector,
+    evaluate_band,
+    locate,
+)
 from core.io import AnalysisParams, apply_config, parse_data_file
 
 
@@ -64,6 +70,7 @@ class ApplyConfigTests(unittest.TestCase):
         self.assertEqual(applied, 2)
         self.assertEqual(params.freq_min, 100.0)
         self.assertEqual(params.freq_max, 3000.0)
+        self.assertEqual(params.band_mode, "high")
 
     def test_primary_frequency_fields_take_precedence(self):
         params = AnalysisParams()
@@ -80,6 +87,25 @@ class ApplyConfigTests(unittest.TestCase):
 
         self.assertEqual(params.freq_min, 200.0)
         self.assertEqual(params.freq_max, 2500.0)
+        self.assertEqual(params.band_mode, "high")
+
+    def test_high_mode_matches_latest_report(self):
+        root = Path(__file__).resolve().parents[1]
+        data_a, data_b = parse_data_file(
+            root / "data" / "测试报告20261124.8" / "测试数据.8.132407.txt"
+        )
+
+        result = locate(
+            data_a,
+            data_b,
+            209.0,
+            1160.0,
+            HIGH_FREQUENCY_BANDS,
+            full_overlap=True,
+        )
+
+        self.assertAlmostEqual(result.dis_a, 99.16, delta=0.01)
+        self.assertGreaterEqual(result.snr, 7.98)
 
 
 if __name__ == "__main__":

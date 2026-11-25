@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T11:30:32",
+  "generated_at": "2026-11-25T11:49:11",
   "data_file": "data\\测试报告20261124.8\\测试数据.8.132407.txt",
   "params": {
     "distance": 209.0,
@@ -9,20 +9,21 @@
     "freq_min": 100.0,
     "freq_max": 3000.0,
     "sample_rate": 7500.0,
-    "duration": 10.0
+    "duration": 10.0,
+    "band_mode": "high"
   },
   "result": {
     "ok": true,
-    "flag": false,
-    "dis_a": 97.62,
-    "dis_b": 111.38,
-    "snr": 5.1170212042887195,
-    "coefficient": 0.13577889778018815,
-    "time_diff": -0.011862068965517234,
+    "flag": true,
+    "dis_a": 99.16,
+    "dis_b": 109.84,
+    "snr": 7.985008007673137,
+    "coefficient": 0.30971089299276355,
+    "time_diff": -0.009206896551724145,
     "best_band": [
-      100,
-      1000
+      1000,
+      1600
     ],
-    "bands_used": 23
+    "bands_used": 15
   }
 }

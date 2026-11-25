@@ -19,6 +19,7 @@ class AnalysisParams:
     freq_max: float = 0.0  # 最大频率 (Hz)，0 表示不限
     sample_rate: float = 7500.0  # 采样率 (Hz)
     duration: float = 10.0  # 参与计算的信号时长 (s)
+    band_mode: str = "regular"  # regular: Sheet2；high: Sheet1
 
     def velocity_known(self) -> bool:
         return self.velocity > 0
@@ -104,6 +105,9 @@ def apply_config(params: AnalysisParams, config: dict[str, Any]) -> int:
     兼容原界面版识别的全部键名，数值字段允许字符串形式。
     """
     applied = 0
+    if any(key in config for key in (
+            "LowFrequency", "lowFrequency", "HighFrequency", "highFrequency")):
+        params.band_mode = "high"
 
     def take_int(value) -> int:
         return int(float(value))

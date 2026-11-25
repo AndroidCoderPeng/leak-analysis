@@ -13,7 +13,13 @@ import argparse
 import sys
 from pathlib import Path
 
-from core.analysis import DEFAULT_BANDS, SAMPLE_RATE, filter_bands, locate
+from core.analysis import (
+    DEFAULT_BANDS,
+    HIGH_FREQUENCY_BANDS,
+    SAMPLE_RATE,
+    filter_bands,
+    locate,
+)
 from core.io import (
     AnalysisParams,
     apply_config,
@@ -39,6 +45,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--diameter", type=int, help="管径 (mm)（用于自动匹配声速）")
     parser.add_argument("--freq-min", type=float, help="最小频率 (Hz)")
     parser.add_argument("--freq-max", type=float, help="最大频率 (Hz)")
+    parser.add_argument(
+        "--band-mode",
+        choices=("regular", "high"),
+        help="扫描频段模式（regular=Sheet2，high=Sheet1）",
+    )
     parser.add_argument("--sample-rate", type=float, default=SAMPLE_RATE, help=f"采样率 (Hz，默认 {SAMPLE_RATE:g})")
     parser.add_argument("--duration", type=float, default=10.0, help="参与计算的信号时长 (s，默认 10)")
     parser.add_argument("--velocity-table",
@@ -68,6 +79,8 @@ def resolve_params(args) -> AnalysisParams:
         params.freq_min = args.freq_min
     if args.freq_max is not None:
         params.freq_max = args.freq_max
+    if args.band_mode is not None:
+        params.band_mode = args.band_mode
 
     # 声速未明确指定时，尝试按材料 + 管径从声速表匹配
     if not params.velocity_known() and params.material and params.diameter > 0:
@@ -119,12 +132,24 @@ def main(argv: list[str] | None = None) -> int:
     print(f"数据：{data_path.name}（A/B 各 {len(data_a)} 点，"
           f"计算前 {duration_actual:.1f} s @ {params.sample_rate:g} Hz）")
 
-    bands = filter_bands(DEFAULT_BANDS, params.freq_min, params.freq_max)
+    source_bands = (
+        HIGH_FREQUENCY_BANDS
+        if params.band_mode == "high"
+        else DEFAULT_BANDS
+    )
+    bands = filter_bands(source_bands, params.freq_min, params.freq_max)
     print(f"参数：距离 {params.distance:g} m，声速 {params.velocity:g} m/s，"
           f"扫描频段 {bands[0][0]}-{bands[-1][1]} Hz 共 {len(bands)} 档")
 
-    result = locate(data_a[:use_length], data_b[:use_length], params.distance, params.velocity, bands,
-                    params.sample_rate)
+    result = locate(
+        data_a[:use_length],
+        data_b[:use_length],
+        params.distance,
+        params.velocity,
+        bands,
+        params.sample_rate,
+        full_overlap=params.band_mode == "high",
+    )
 
     if not result.ok:
         print("定位失败：没有有效频段参与计算，请检查参数和频段范围", file=sys.stderr)

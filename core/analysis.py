@@ -33,6 +33,13 @@ DEFAULT_BANDS = [
     (75, 300), (80, 350), (60, 400), (110, 500),
 ]
 
+#: 与 algo-compare/freList_modified.xlsx Sheet1 一致的高频扫描频段。
+HIGH_FREQUENCY_BANDS = [
+    (400, 2500), (300, 2500), (600, 2500), (1100, 1400), (1300, 2400),
+    (1500, 2400), (200, 2000), (400, 2200), (600, 2400), (800, 2400),
+    (600, 2000), (400, 1800), (600, 1600), (800, 1400), (1000, 1600),
+]
+
 @dataclass
 class LocateResult:
     ok: bool = False
@@ -115,7 +122,8 @@ def pearson_overlap(a: np.ndarray, b: np.ndarray, offset: int,
     return float(np.clip(coefficient, -1.0, 1.0))
 
 def correlation_vector(a: np.ndarray, b: np.ndarray, distance: float,
-                       velocity: float, fs: float = SAMPLE_RATE):
+                       velocity: float, fs: float = SAMPLE_RATE,
+                       full_overlap: bool = False):
     a = np.asarray(a, dtype=np.float64)
     b = np.asarray(b, dtype=np.float64)
     if a.size == 0 or a.size != b.size or distance <= 0 or velocity <= 0 or fs <= 0:
@@ -126,7 +134,7 @@ def correlation_vector(a: np.ndarray, b: np.ndarray, distance: float,
     max_lag = int(np.floor(max_time_diff_us / sampling_interval_us))
     point_num = 1 + 2 * max_lag
     center = max_lag
-    correlation_window_samples = max(
+    correlation_window_samples = None if full_overlap else max(
         2, int(round(CORRELATION_WINDOW_SECONDS * fs))
     )
 
@@ -148,10 +156,13 @@ def correlation_vector(a: np.ndarray, b: np.ndarray, distance: float,
 
 
 def evaluate_band(a: Iterable[float], b: Iterable[float], distance: float,
-                  velocity: float, low: int, high: int, fs: float = SAMPLE_RATE):
+                  velocity: float, low: int, high: int, fs: float = SAMPLE_RATE,
+                  full_overlap: bool = False):
     vec_a = chebyshev2_bandpass(de_mean(a), low, high, fs)
     vec_b = chebyshev2_bandpass(de_mean(b), low, high, fs)
-    corr, dis_axis = correlation_vector(vec_a, vec_b, distance, velocity, fs)
+    corr, dis_axis = correlation_vector(
+        vec_a, vec_b, distance, velocity, fs, full_overlap
+    )
 
     result = LocateResult(best_low=low, best_high=high)
     if corr.size == 0:
@@ -179,7 +190,7 @@ def evaluate_band(a: Iterable[float], b: Iterable[float], distance: float,
 
 def locate(a: Iterable[float], b: Iterable[float], distance: float,
            velocity: float, bands: Iterable[tuple[float, float]],
-           fs: float = SAMPLE_RATE) -> LocateResult:
+           fs: float = SAMPLE_RATE, full_overlap: bool = False) -> LocateResult:
     vec_a = np.asarray(a, dtype=np.float64)
     vec_b = np.asarray(b, dtype=np.float64)
     if vec_a.size == 0 or vec_a.size != vec_b.size or distance <= 0 or velocity <= 0:
@@ -195,7 +206,9 @@ def locate(a: Iterable[float], b: Iterable[float], distance: float,
     snr_max = -1.0
 
     for low, high in bands:
-        result, corr, dis_axis = evaluate_band(vec_a, vec_b, distance, velocity, low, high, fs)
+        result, corr, dis_axis = evaluate_band(
+            vec_a, vec_b, distance, velocity, low, high, fs, full_overlap
+        )
         if corr.size:
             traces.append((low, high, dis_axis, np.abs(corr)))
         if result.ok and result.snr > snr_max:
@@ -206,7 +219,7 @@ def locate(a: Iterable[float], b: Iterable[float], distance: float,
         return LocateResult(bands_used=len(traces), traces=traces)
 
     final, _, _ = evaluate_band(vec_a, vec_b, distance, velocity,
-                                best.best_low, best.best_high, fs)
+                                best.best_low, best.best_high, fs, full_overlap)
     final.bands_used = len(traces)
     final.traces = traces
     return final
